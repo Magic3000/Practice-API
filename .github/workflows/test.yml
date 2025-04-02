@@ -37,16 +37,19 @@ jobs:
           cd simbirsoft_sdet_project
           docker-compose -f docker-compose.yaml up -d
 
+      - name: Check migration logs
+        run: |
+          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml logs simbirsoft_sdet_project_migrate_1
+
       - name: Show Docker container logs
         run: |
           cd simbirsoft_sdet_project
           docker-compose logs service
           docker-compose -f docker-compose.yaml ps
-          docker-compose -f docker-compose.yaml exec service curl --silent --fail http://localhost:8080/health
 
       - name: Wait for server to be ready
         run: |
-          until curl --silent --fail http://localhost:8080/health; do
+          until curl --silent --fail http://0.0.0.0:8080/health; do
             echo "Waiting for server to be ready..."
             sleep 10
           done
