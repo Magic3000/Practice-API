@@ -32,14 +32,10 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
-      - name: List directory contents for debugging
-        run: |
-          ls -la simbirsoft_sdet_project  # Проверим содержимое папки
-
       - name: Build and start server with Docker
         run: |
           cd simbirsoft_sdet_project
-          docker-compose -f docker-compose.yml up -d
+          docker-compose -f docker-compose.yaml up -d
 
       - name: Wait for server to be ready
         run: |
