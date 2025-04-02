@@ -39,7 +39,7 @@ jobs:
 
       - name: Show Docker container logs
         run: |
-          docker-compose logs <service_name>
+          docker-compose logs service
 
       - name: Wait for server to be ready
         run: |
