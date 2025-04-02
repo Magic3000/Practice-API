@@ -41,14 +41,14 @@ jobs:
         run: |
           cd simbirsoft_sdet_project
           docker-compose logs service
-          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml ps
-          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml exec service curl --silent --fail http://localhost:8080/health
+          docker-compose -f docker-compose.yaml ps
+          docker-compose -f docker-compose.yaml exec service curl --silent --fail http://localhost:8080/health
 
       - name: Wait for server to be ready
         run: |
-          until curl --silent --fail http://127.0.0.1:8080/health; do
+          until curl --silent --fail http://localhost:8080/health; do
             echo "Waiting for server to be ready..."
-            sleep 5
+            sleep 10
           done
 
       - name: Run Tests
