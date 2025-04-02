@@ -39,7 +39,7 @@ jobs:
 
       - name: Wait for server to be ready
         run: |
-          until curl --silent --fail http://localhost:8080/health; do
+          until curl --silent --fail http://127.0.0.1:8080/health; do
             echo "Waiting for server to be ready..."
             sleep 5
           done
