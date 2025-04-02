@@ -41,6 +41,8 @@ jobs:
         run: |
           cd simbirsoft_sdet_project
           docker-compose logs service
+          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml ps
+          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml exec service curl --silent --fail http://localhost:8080/health
 
       - name: Wait for server to be ready
         run: |
