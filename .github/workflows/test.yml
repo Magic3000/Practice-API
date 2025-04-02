@@ -37,10 +37,6 @@ jobs:
           cd simbirsoft_sdet_project
           docker-compose -f docker-compose.yaml up -d
 
-      - name: Check migration logs
-        run: |
-          docker-compose -f simbirsoft_sdet_project/docker-compose.yaml logs simbirsoft_sdet_project_migrate_1
-
       - name: Show Docker container logs
         run: |
           cd simbirsoft_sdet_project
