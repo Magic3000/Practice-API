@@ -23,6 +23,18 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-maven-
 
+      - name: Build and start server with Docker
+        run: |
+          cd simbirsoft_sdet_project
+          docker-compose -f docker-compose.yml up -d
+
+      - name: Wait for server to be ready
+        run: |
+          until curl --silent --fail http://localhost:8080/health; do
+            echo "Waiting for server to be ready..."
+            sleep 5
+          done
+
       - name: Run Tests
         run: mvn clean test
 
