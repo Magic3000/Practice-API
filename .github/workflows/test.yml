@@ -37,6 +37,10 @@ jobs:
           cd simbirsoft_sdet_project
           docker-compose -f docker-compose.yaml up -d
 
+      - name: Show Docker container logs
+        run: |
+          docker-compose logs <service_name>
+
       - name: Wait for server to be ready
         run: |
           until curl --silent --fail http://127.0.0.1:8080/health; do
