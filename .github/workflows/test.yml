@@ -43,13 +43,6 @@ jobs:
           docker-compose logs service
           docker-compose -f docker-compose.yaml ps
 
-      - name: Wait for server to be ready
-        run: |
-          until curl --silent --fail http://0.0.0.0:8080/health; do
-            echo "Waiting for server to be ready..."
-            sleep 10
-          done
-
       - name: Run Tests
         run: mvn clean test
 
