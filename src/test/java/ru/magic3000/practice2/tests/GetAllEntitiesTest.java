@@ -17,7 +17,8 @@ public class GetAllEntitiesTest extends BaseTest {
     @Test(description = "Get All Entities Test")
     @Description("Verifies that all created entities are fetched correctly by comparing the expected and actual counts and IDs")
     public void GetAllEntities() {
-        assert getCreatedEntities().size() == testEntitiesCount : String.format("Not all entities created, expected %s", testEntitiesCount);
+        assert getCreatedEntities().size() == testEntitiesCount
+                : String.format("Not all entities created, expected %s", testEntitiesCount);
 
         List<Entity> fetchedEntities = EntityDispatcher.getAll();
         assert fetchedEntities.size() >= getCreatedEntities().size() :
@@ -26,11 +27,16 @@ public class GetAllEntitiesTest extends BaseTest {
         Set<Integer> fetchedEntityIds = fetchedEntities.stream()
                 .map(Entity::getId)
                 .collect(Collectors.toSet());
-        getCreatedEntities().forEach(entityId -> {
-            assert fetchedEntityIds.contains(entityId) : String.format("Fetched entities don't contain created entity %s", entityId);
-        });
+
+        List<Integer> missingEntities = getCreatedEntities().stream()
+                .filter(id -> !fetchedEntityIds.contains(id))
+                .toList();
+
         Allure.addAttachment("All entities: ", fetchedEntityIds.stream()
                 .map(String::valueOf)
                 .collect(Collectors.joining(", ")));
+
+        assert missingEntities.isEmpty() :
+                String.format("Fetched entities don't contain created entities: %s", missingEntities);
     }
 }

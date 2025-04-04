@@ -1,16 +1,26 @@
 package ru.magic3000.practice2.pojo;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+import java.util.List;
+
 @Builder
 @Data
-@NoArgsConstructor
 public class Addition {
-    private Integer id;
-    private String additional_info;
-    private Integer additional_number;
+    public Integer id;
+    public String additional_info;
+    public Integer additional_number;
+
+    @JsonCreator
+    public Addition(
+            @JsonProperty("id") Integer id,
+            @JsonProperty("additional_info") String additional_info,
+            @JsonProperty("additional_number") Integer additional_number) {
+        this.id = id;
+        this.additional_info = additional_info;
+        this.additional_number = additional_number;
+    }
 }

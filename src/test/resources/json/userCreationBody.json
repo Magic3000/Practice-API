@@ -1,9 +1,0 @@
-{
-  "title": "entity_title",
-  "verified": true,
-  "addition": {
-    "additional_info": "entity_additional_info",
-    "additional_number": 3000
-  },
-  "important_numbers": [0, 1, 2]
-}

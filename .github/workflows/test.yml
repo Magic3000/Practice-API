@@ -32,6 +32,9 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose --version
 
+      - name: Clone external server repository
+        run: git clone https://github.com/bondarenkokate73/simbirsoft_sdet_project.git
+
       - name: Build and start server with Docker
         run: |
           cd simbirsoft_sdet_project

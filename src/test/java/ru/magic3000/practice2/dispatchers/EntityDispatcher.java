@@ -4,17 +4,18 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
-import ru.magic3000.practice2.helpers.JsonHelper;
+import ru.magic3000.practice2.pojo.Addition;
 import ru.magic3000.practice2.pojo.Entity;
 import ru.magic3000.practice2.tests.BaseTest;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static io.restassured.RestAssured.given;
+import static ru.magic3000.practice2.helpers.Constants.*;
 
 public class EntityDispatcher {
     static final String CREATE_ENDPOINT = "/api/create";
@@ -28,13 +29,24 @@ public class EntityDispatcher {
      */
     public static String getRandomizedEntityPayload() {
         try {
-            return Objects.requireNonNull(JsonHelper.readFromFile(
-                            "src/test/resources/json/userCreationBody.json"))
-                    .replace("entity_title", String.format("title-%s", UUID.randomUUID()))
-                    .replace("3000", String.valueOf(new Random().nextInt(343)));
-        }
-        catch (NullPointerException exc) {
-            exc.printStackTrace();
+            Entity entity = Entity.builder()
+                    .title(String.format("title-%s", UUID.randomUUID()))
+                    .verified(rnd.nextBoolean())
+                    .addition(Addition.builder()
+                            .id(rnd.nextInt(1000))
+                            .additional_info(faker.lorem().sentence())
+                            .additional_number(rnd.nextInt(100))
+                            .build())
+                    .important_numbers(
+                            IntStream.range(0, 5)
+                                    .map(i -> rnd.nextInt(100))
+                                    .boxed()
+                                    .collect(Collectors.toList()))
+                    .build();
+
+            return objectMapper.writeValueAsString(entity);
+        } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -104,7 +116,7 @@ public class EntityDispatcher {
             validateEntity(entity);
             return entity;
         } catch (Exception e) {
-            throw new RuntimeException("Error deserializing response", e);
+            throw new RuntimeException(String.format("Error deserializing response: %s", e.getMessage()), e);
         }
     }
 
